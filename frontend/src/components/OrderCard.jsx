@@ -19,7 +19,7 @@ export default function OrderCard({ order, action }) {
           </span>
         </div>
         <p className="mt-1 text-sm text-charcoal/60">
-          {order.word_count} words · ${order.payment_amount.toFixed(0)}
+          {order.page_count} page(s) · ${order.payment_amount.toFixed(0)}
           {order.writer_name ? ` · Writer: ${order.writer_name}` : ""}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-charcoal/85">{order.instructions}</p>

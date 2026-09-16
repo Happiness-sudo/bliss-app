@@ -40,7 +40,7 @@ def create_order():
         bidder_id=bidder.id,
         writer_id=writer.id if writer else None,
         instructions=instructions,
-        word_count=int(data.get("word_count", 0) or 0),
+        page_count=int(data.get("page_count", 0) or 0),
         payment_amount=float(data.get("payment_amount", 0) or 0),
         status="assigned",
     )

@@ -52,7 +52,7 @@ class Order(db.Model):
     writer_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
 
     instructions = db.Column(db.Text, nullable=False)
-    word_count = db.Column(db.Integer, default=0)
+    page_count = db.Column(db.Integer, default=0)
     deadline = db.Column(db.DateTime, nullable=True)
 
     payment_amount = db.Column(db.Float, default=0.0)
@@ -80,7 +80,7 @@ class Order(db.Model):
             "writer_id": self.writer_id,
             "writer_name": self.writer.name if self.writer else None,
             "instructions": self.instructions,
-            "word_count": self.word_count,
+            "page_count": self.page_count,
             "deadline": self.deadline.isoformat() if self.deadline else None,
             "payment_amount": self.payment_amount,
             "is_paid": self.is_paid,

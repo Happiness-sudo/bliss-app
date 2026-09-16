@@ -3,7 +3,7 @@ import { api } from "../api";
 import OrderCard from "../components/OrderCard";
 import StatCard from "../components/StatCard";
 
-const emptyForm = { order_number: "", instructions: "", word_count: "", payment_amount: "", writer_id: "" };
+const emptyForm = { order_number: "", instructions: "", page_count: "", payment_amount: "", writer_id: "" };
 
 export default function BidderDashboard() {
   const [data, setData] = useState(null);
@@ -31,7 +31,7 @@ export default function BidderDashboard() {
     try {
       await api.createOrder({
         ...form,
-        word_count: parseInt(form.word_count) || 0,
+        page_count: parseInt(form.page_count) || 0,
         payment_amount: parseFloat(form.payment_amount) || 0,
         writer_id: form.writer_id || null,
       });
@@ -111,9 +111,9 @@ export default function BidderDashboard() {
           <div className="grid grid-cols-3 gap-3">
             <input
               type="number"
-              placeholder="Word count"
-              value={form.word_count}
-              onChange={(e) => setForm({ ...form, word_count: e.target.value })}
+              placeholder="Number of pages"
+              value={form.page_count}
+              onChange={(e) => setForm({ ...form, page_count: e.target.value })}
               className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
             />
             <input
