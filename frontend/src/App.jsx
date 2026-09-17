@@ -7,6 +7,7 @@ import EmployerDashboard from "./pages/EmployerDashboard";
 import BidderDashboard from "./pages/BidderDashboard";
 import WriterDashboard from "./pages/WriterDashboard";
 import TeamManagement from "./pages/TeamManagement";
+import { connectSocket, disconnectSocket } from "./socket";
 
 function Home() {
   return (
@@ -42,16 +43,22 @@ export default function App() {
 
   useEffect(() => {
     const stored = localStorage.getItem("bliss_user");
-    if (stored) setUser(JSON.parse(stored));
+    if (stored) {
+      setUser(JSON.parse(stored));
+      connectSocket();
+    }
+    return () => disconnectSocket();
   }, []);
 
   function handleAuth({ token, user }) {
     localStorage.setItem("bliss_token", token);
     localStorage.setItem("bliss_user", JSON.stringify(user));
     setUser(user);
+    connectSocket();
   }
 
   function handleLogout() {
+    disconnectSocket();
     localStorage.removeItem("bliss_token");
     localStorage.removeItem("bliss_user");
     setUser(null);
