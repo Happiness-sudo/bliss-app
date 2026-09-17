@@ -1,3 +1,5 @@
+import PresenceDot from "./PresenceDot";
+
 const statusColor = {
   assigned: "text-amber",
   in_progress: "text-amber",
@@ -18,9 +20,18 @@ export default function OrderCard({ order, action }) {
             {order.status.replace(/_/g, " ")}
           </span>
         </div>
-        <p className="mt-1 text-sm text-charcoal/60">
-          {order.page_count} page(s) · ${order.payment_amount.toFixed(0)}
-          {order.writer_name ? ` · Writer: ${order.writer_name}` : ""}
+        <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-charcoal/60">
+          <span>{order.page_count} page(s) &middot; ${order.payment_amount.toFixed(0)}</span>
+          {order.bidder_id && (
+            <span className="inline-flex items-center gap-1">
+              <PresenceDot userId={order.bidder_id} /> Bidder: {order.bidder_name}
+            </span>
+          )}
+          {order.writer_name && (
+            <span className="inline-flex items-center gap-1">
+              <PresenceDot userId={order.writer_id} /> Writer: {order.writer_name}
+            </span>
+          )}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-charcoal/85">{order.instructions}</p>
         {action && <div className="mt-4">{action}</div>}

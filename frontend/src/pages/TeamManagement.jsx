@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
+import PresenceDot from "../components/PresenceDot";
 
 const emptyForm = { name: "", email: "", password: "", role: "bidder" };
 
@@ -47,7 +48,7 @@ export default function TeamManagement() {
   }
 
   if (error && !team) return <p className="mx-auto max-w-4xl px-6 py-10 text-amber">{error}</p>;
-  if (!team) return <p className="mx-auto max-w-4xl px-6 py-10 text-charcoal/60">Loading…</p>;
+  if (!team) return <p className="mx-auto max-w-4xl px-6 py-10 text-charcoal/60">Loading...</p>;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -108,7 +109,7 @@ export default function TeamManagement() {
           disabled={loading}
           className="rounded bg-amber px-4 py-2 text-sm text-white hover:bg-amber/90 disabled:opacity-60"
         >
-          {loading ? "Adding…" : `Add ${form.role}`}
+          {loading ? "Adding..." : `Add ${form.role}`}
         </button>
       </form>
 
@@ -117,7 +118,10 @@ export default function TeamManagement() {
         {team.bidders.length === 0 && <p className="text-sm text-charcoal/60">No bidders yet.</p>}
         {team.bidders.map((b) => (
           <div key={b.id} className="flex items-center justify-between rounded border border-line bg-white/60 px-4 py-3 text-sm">
-            <span className="text-ink">{b.name} <span className="text-charcoal/50">· {b.email}</span></span>
+            <span className="inline-flex items-center gap-2 text-ink">
+              <PresenceDot userId={b.id} />
+              {b.name} <span className="text-charcoal/50">&middot; {b.email}</span>
+            </span>
             <button onClick={() => handleRemove(b.id)} className="text-xs text-charcoal/50 hover:text-amber">
               Remove
             </button>
@@ -130,7 +134,10 @@ export default function TeamManagement() {
         {team.writers.length === 0 && <p className="text-sm text-charcoal/60">No writers yet.</p>}
         {team.writers.map((w) => (
           <div key={w.id} className="flex items-center justify-between rounded border border-line bg-white/60 px-4 py-3 text-sm">
-            <span className="text-ink">{w.name} <span className="text-charcoal/50">· {w.email}</span></span>
+            <span className="inline-flex items-center gap-2 text-ink">
+              <PresenceDot userId={w.id} />
+              {w.name} <span className="text-charcoal/50">&middot; {w.email}</span>
+            </span>
             <button onClick={() => handleRemove(w.id)} className="text-xs text-charcoal/50 hover:text-amber">
               Remove
             </button>
