@@ -7,6 +7,7 @@ from models import db
 from routes.auth import auth_bp
 from routes.team import team_bp
 from routes.orders import orders_bp
+from sockets import socketio
 
 
 def create_app():
@@ -16,6 +17,7 @@ def create_app():
     CORS(app)
     db.init_app(app)
     JWTManager(app)
+    socketio.init_app(app)
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(team_bp, url_prefix="/api")
@@ -34,4 +36,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    socketio.run(app, debug=True, port=5000)
