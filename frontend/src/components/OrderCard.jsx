@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PresenceDot from "./PresenceDot";
 
 const statusColor = {
@@ -15,7 +16,9 @@ export default function OrderCard({ order, action }) {
       <div className="mt-1 h-full w-1 self-stretch rounded-full bg-amber/70" />
       <div className="flex-1">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-lg text-ink">#{order.order_number}</h3>
+          <Link to={`/orders/${order.id}`} className="font-display text-lg text-ink hover:text-amber">
+            #{order.order_number}
+          </Link>
           <span className={`whitespace-nowrap text-sm ${statusColor[order.status] || "text-charcoal/60"}`}>
             {order.status.replace(/_/g, " ")}
           </span>
@@ -34,7 +37,12 @@ export default function OrderCard({ order, action }) {
           )}
         </p>
         <p className="mt-3 text-sm leading-relaxed text-charcoal/85">{order.instructions}</p>
-        {action && <div className="mt-4">{action}</div>}
+        <div className="mt-4 flex items-center gap-3">
+          <Link to={`/orders/${order.id}`} className="text-xs text-charcoal/50 hover:text-amber">
+            View details &rarr;
+          </Link>
+          {action}
+        </div>
       </div>
     </div>
   );

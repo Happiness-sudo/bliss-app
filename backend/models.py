@@ -90,3 +90,56 @@ class Order(db.Model):
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
+
+
+class OrderFile(db.Model):
+    __tablename__ = "order_files"
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
+    uploaded_by_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    original_filename = db.Column(db.String(255), nullable=False)
+    stored_filename = db.Column(db.String(255), nullable=False, unique=True)
+    file_size = db.Column(db.Integer, default=0)
+
+    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    order = db.relationship("Order", backref="files")
+    uploaded_by = db.relationship("User")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "order_id": self.order_id,
+            "uploaded_by_id": self.uploaded_by_id,
+            "uploaded_by_name": self.uploaded_by.name,
+            "original_filename": self.original_filename,
+            "file_size": self.file_size,
+            "uploaded_at": self.uploaded_at.isoformat(),
+        }
+
+
+class OrderComment(db.Model):
+    __tablename__ = "order_comments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    body = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    order = db.relationship("Order", backref="comments")
+    author = db.relationship("User")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "order_id": self.order_id,
+            "author_id": self.author_id,
+            "author_name": self.author.name,
+            "author_role": self.author.role,
+            "body": self.body,
+            "created_at": self.created_at.isoformat(),
+        }

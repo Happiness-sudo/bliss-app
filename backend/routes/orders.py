@@ -177,3 +177,21 @@ def employer_dashboard():
             "total_revenue": sum(o.payment_amount for o in orders if o.is_paid),
         },
     })
+
+
+@orders_bp.get("/orders/<int:order_id>")
+@jwt_required()
+def get_order(order_id):
+    claims = get_jwt()
+    order = Order.query.get_or_404(order_id)
+    user = current_user()
+
+    allowed = (
+        (claims.get("role") == "employer" and order.employer_id == user.id) or
+        (claims.get("role") == "bidder" and order.bidder_id == user.id) or
+        (claims.get("role") == "writer" and order.writer_id == user.id)
+    )
+    if not allowed:
+        return jsonify({"error": "You don't have access to this order."}), 403
+
+    return jsonify(order.to_dict())

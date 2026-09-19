@@ -3,7 +3,7 @@ from flask_jwt_extended import decode_token
 from flask import request
 from models import User
 
-socketio = SocketIO(cors_allowed_origins="*", async_mode="eventlet")
+socketio = SocketIO(cors_allowed_origins="*", async_mode="threading")
 
 online_counts = {}
 

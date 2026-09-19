@@ -22,6 +22,23 @@ async function request(path, { method = "GET", body, auth = false } = {}) {
   return data;
 }
 
+async function uploadRequest(path, file) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${BASE_URL}${path}`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: formData,
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || "Upload failed.");
+  }
+  return data;
+}
+
 export const api = {
   signup: (payload) => request("/auth/signup", { method: "POST", body: payload }),
   login: (payload) => request("/auth/login", { method: "POST", body: payload }),
@@ -31,6 +48,7 @@ export const api = {
   removeTeamMember: (userId) => request(`/team/${userId}`, { method: "DELETE", auth: true }),
 
   createOrder: (payload) => request("/orders", { method: "POST", body: payload, auth: true }),
+  getOrder: (orderId) => request(`/orders/${orderId}`, { auth: true }),
   assignWriter: (orderId, writerId) =>
     request(`/orders/${orderId}/assign`, { method: "POST", body: { writer_id: writerId }, auth: true }),
   submitWork: (orderId, submissionText) =>
@@ -49,4 +67,13 @@ export const api = {
   writerDashboard: () => request("/dashboard/writer", { auth: true }),
   bidderDashboard: () => request("/dashboard/bidder", { auth: true }),
   employerDashboard: () => request("/dashboard/employer", { auth: true }),
+
+  listFiles: (orderId) => request(`/orders/${orderId}/files`, { auth: true }),
+  uploadFile: (orderId, file) => uploadRequest(`/orders/${orderId}/files`, file),
+  downloadFileUrl: (fileId) => `${BASE_URL}/files/${fileId}/download`,
+  deleteFile: (fileId) => request(`/files/${fileId}`, { method: "DELETE", auth: true }),
+
+  listComments: (orderId) => request(`/orders/${orderId}/comments`, { auth: true }),
+  addComment: (orderId, body) =>
+    request(`/orders/${orderId}/comments`, { method: "POST", body: { body }, auth: true }),
 };

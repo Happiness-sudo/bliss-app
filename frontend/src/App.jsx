@@ -7,6 +7,7 @@ import EmployerDashboard from "./pages/EmployerDashboard";
 import BidderDashboard from "./pages/BidderDashboard";
 import WriterDashboard from "./pages/WriterDashboard";
 import TeamManagement from "./pages/TeamManagement";
+import OrderDetail from "./pages/OrderDetail";
 import { connectSocket, disconnectSocket } from "./socket";
 
 function Home() {
@@ -100,6 +101,14 @@ export default function App() {
           element={
             <Protected user={user} role="writer">
               <WriterDashboard />
+            </Protected>
+          }
+        />
+        <Route
+          path="/orders/:orderId"
+          element={
+            <Protected user={user}>
+              <OrderDetail />
             </Protected>
           }
         />
