@@ -137,3 +137,25 @@ export default function OrderDetail() {
         <input ref={fileInputRef} type="file" onChange={handleFileChange} disabled={uploading} className="text-sm text-charcoal/70 file:mr-3 file:rounded file:border file:border-line file:bg-white/70 file:px-3 file:py-1.5 file:text-sm file:text-ink hover:file:border-amber" />
         {uploading && <p className="mt-1 text-xs text-charcoal/50">Uploading...</p>}
       </div>
+
+      <h2 className="mt-10 font-display text-lg text-ink">Comments</h2>
+      <div className="mt-3 space-y-3">
+        {comments.length === 0 && <p className="text-sm text-charcoal/60">No comments yet.</p>}
+        {comments.map((c) => (
+          <div key={c.id} className="rounded border border-line bg-white/60 p-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span className="capitalize text-ink">{c.author_name} <span className="text-charcoal/50">({c.author_role})</span></span>
+              <span className="text-xs text-charcoal/40">{formatTime(c.created_at)}</span>
+            </div>
+            <p className="mt-1 text-charcoal/80">{c.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <form onSubmit={handleSendComment} className="mt-4 flex gap-2">
+        <input value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Write a comment..." className="flex-1 rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber" />
+        <button type="submit" disabled={sendingComment} className="rounded bg-amber px-4 py-2 text-sm text-white hover:bg-amber/90 disabled:opacity-60">{sendingComment ? "Sending..." : "Send"}</button>
+      </form>
+    </div>
+  );
+}
