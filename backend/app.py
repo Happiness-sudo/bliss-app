@@ -42,4 +42,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, port=5000, use_reloader=False)
+    socketio.run(app, debug=True, port=5000, use_reloader=False, allow_unsafe_werkzeug=True)

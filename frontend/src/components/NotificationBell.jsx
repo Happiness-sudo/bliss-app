@@ -86,7 +86,7 @@ export default function NotificationBell() {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button onClick={handleOpen} className="relative rounded-md border border-line px-3 py-1.5 text-sm text-charcoal hover:border-amber hover:text-amber">
+      <button onClick={handleOpen} className="relative rounded-md border border-line dark:border-[#333b47] px-3 py-1.5 text-sm text-charcoal dark:text-[#c9c2b0] hover:border-amber hover:text-amber">
         Notifications
         {unreadCount > 0 && (
           <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber px-1 text-[10px] font-medium text-white">
@@ -96,9 +96,9 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-80 rounded border border-line bg-white shadow-lg z-10">
-          <div className="flex items-center justify-between border-b border-line px-4 py-2">
-            <span className="text-sm text-ink">Notifications</span>
+        <div className="absolute right-0 mt-2 w-80 rounded border border-line dark:border-[#333b47] bg-white shadow-lg z-10">
+          <div className="flex items-center justify-between border-b border-line dark:border-[#333b47] px-4 py-2">
+            <span className="text-sm text-ink dark:text-[#e9e4d8]">Notifications</span>
             {unreadCount > 0 && (
               <button onClick={handleMarkAllRead} className="text-xs text-amber hover:underline">
                 Mark all read
@@ -107,25 +107,25 @@ export default function NotificationBell() {
           </div>
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 && (
-              <p className="px-4 py-6 text-center text-sm text-charcoal/50">No notifications yet.</p>
+              <p className="px-4 py-6 text-center text-sm text-charcoal/50 dark:text-[#c9c2b0]/50">No notifications yet.</p>
             )}
             {notifications.map((n) => {
               const content = (
                 <div
-                  className={`border-b border-line px-4 py-3 text-sm last:border-b-0 ${
+                  className={`border-b border-line dark:border-[#333b47] px-4 py-3 text-sm last:border-b-0 ${
                     n.is_read ? "bg-white" : "bg-amber/5"
                   }`}
                 >
-                  <p className="text-charcoal/85">{n.message}</p>
-                  <p className="mt-1 text-xs text-charcoal/40">{timeAgo(n.created_at)}</p>
+                  <p className="text-charcoal/85 dark:text-[#c9c2b0]/85">{n.message}</p>
+                  <p className="mt-1 text-xs text-charcoal/40 dark:text-[#c9c2b0]/40">{timeAgo(n.created_at)}</p>
                 </div>
               );
               return n.order_id ? (
-                <Link key={n.id} to={`/orders/${n.order_id}`} onClick={() => handleNotificationClick(n)} className="block hover:bg-paper">
+                <Link key={n.id} to={`/orders/${n.order_id}`} onClick={() => handleNotificationClick(n)} className="block hover:bg-paper dark:bg-[#14181f]">
                   {content}
                 </Link>
               ) : (
-                <div key={n.id} onClick={() => handleNotificationClick(n)} className="cursor-pointer hover:bg-paper">
+                <div key={n.id} onClick={() => handleNotificationClick(n)} className="cursor-pointer hover:bg-paper dark:bg-[#14181f]">
                   {content}
                 </div>
               );

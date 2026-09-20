@@ -63,14 +63,14 @@ export default function BidderDashboard() {
   }
 
   if (error && !data) return <p className="mx-auto max-w-4xl px-6 py-10 text-amber">{error}</p>;
-  if (!data) return <p className="mx-auto max-w-4xl px-6 py-10 text-charcoal/60">Loading…</p>;
+  if (!data) return <p className="mx-auto max-w-4xl px-6 py-10 text-charcoal/60 dark:text-[#c9c2b0]/60">Loading…</p>;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl text-ink">Your orders</h1>
-          <p className="mt-1 text-sm text-charcoal/60">Log orders won from clients and assign writers.</p>
+          <h1 className="font-display text-2xl text-ink dark:text-[#e9e4d8]">Your orders</h1>
+          <p className="mt-1 text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">Log orders won from clients and assign writers.</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
@@ -92,13 +92,13 @@ export default function BidderDashboard() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreateOrder} className="mt-8 space-y-3 rounded border border-line bg-white/60 p-5">
+        <form onSubmit={handleCreateOrder} className="mt-8 space-y-3 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-5">
           <input
             required
             placeholder="Order number (client reference)"
             value={form.order_number}
             onChange={(e) => setForm({ ...form, order_number: e.target.value })}
-            className="w-full rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+            className="w-full rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
           />
           <textarea
             required
@@ -106,7 +106,7 @@ export default function BidderDashboard() {
             rows={3}
             value={form.instructions}
             onChange={(e) => setForm({ ...form, instructions: e.target.value })}
-            className="w-full rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+            className="w-full rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
           />
           <div className="grid grid-cols-4 gap-3">
             <input
@@ -114,26 +114,26 @@ export default function BidderDashboard() {
               placeholder="Number of pages"
               value={form.page_count}
               onChange={(e) => setForm({ ...form, page_count: e.target.value })}
-              className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+              className="rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
             />
             <input
               type="number"
               placeholder="Payment ($)"
               value={form.payment_amount}
               onChange={(e) => setForm({ ...form, payment_amount: e.target.value })}
-              className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+              className="rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
             />
             <input
               type="datetime-local"
               placeholder="Deadline"
               value={form.deadline}
               onChange={(e) => setForm({ ...form, deadline: e.target.value })}
-              className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+              className="rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
             />
             <select
               value={form.writer_id}
               onChange={(e) => setForm({ ...form, writer_id: e.target.value })}
-              className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+              className="rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
             >
               <option value="">Assign writer later</option>
               {data.writers.map((w) => (
@@ -147,9 +147,9 @@ export default function BidderDashboard() {
         </form>
       )}
 
-      <h2 className="mt-10 font-display text-lg text-ink">Orders</h2>
+      <h2 className="mt-10 font-display text-lg text-ink dark:text-[#e9e4d8]">Orders</h2>
       <div className="mt-4 space-y-3">
-        {data.orders.length === 0 && <p className="text-sm text-charcoal/60">No orders logged yet.</p>}
+        {data.orders.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No orders logged yet.</p>}
         {data.orders.map((o) => (
           <div key={o.id}>
             <OrderCard
@@ -159,7 +159,7 @@ export default function BidderDashboard() {
                   {!o.writer_id && (
                     <button
                       onClick={() => setReassigning(reassigning === o.id ? null : o.id)}
-                      className="rounded border border-ink px-3 py-1 text-xs text-ink hover:bg-ink hover:text-paper"
+                      className="rounded border border-ink px-3 py-1 text-xs text-ink dark:text-[#e9e4d8] hover:bg-ink hover:text-paper"
                     >
                       Assign writer
                     </button>
@@ -186,11 +186,11 @@ export default function BidderDashboard() {
               }
             />
             {reassigning === o.id && (
-              <div className="mt-2 flex gap-2 rounded border border-line bg-white/60 p-3">
+              <div className="mt-2 flex gap-2 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-3">
                 <select
                   onChange={(e) => e.target.value && handleAssign(o.id, e.target.value)}
                   defaultValue=""
-                  className="flex-1 rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+                  className="flex-1 rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
                 >
                   <option value="" disabled>Choose a writer…</option>
                   {data.writers.map((w) => (
@@ -200,8 +200,8 @@ export default function BidderDashboard() {
               </div>
             )}
             {o.submission_text && o.status !== "assigned" && (
-              <div className="mt-2 rounded border border-line bg-white/40 p-4 text-sm text-charcoal/80">
-                <p className="mb-1 text-xs uppercase tracking-wide text-charcoal/50">Writer's submission</p>
+              <div className="mt-2 rounded border border-line dark:border-[#333b47] bg-white/40 dark:bg-[#1e242e]/40 p-4 text-sm text-charcoal/80 dark:text-[#c9c2b0]/80">
+                <p className="mb-1 text-xs uppercase tracking-wide text-charcoal/50 dark:text-[#c9c2b0]/50">Writer's submission</p>
                 {o.submission_text}
               </div>
             )}

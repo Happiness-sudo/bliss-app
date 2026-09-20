@@ -34,12 +34,12 @@ export default function WriterDashboard() {
   }
 
   if (error && !data) return <p className="mx-auto max-w-4xl px-6 py-10 text-amber">{error}</p>;
-  if (!data) return <p className="mx-auto max-w-4xl px-6 py-10 text-charcoal/60">Loading…</p>;
+  if (!data) return <p className="mx-auto max-w-4xl px-6 py-10 text-charcoal/60 dark:text-[#c9c2b0]/60">Loading…</p>;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
-      <h1 className="font-display text-2xl text-ink">Your assignments</h1>
-      <p className="mt-1 text-sm text-charcoal/60">Orders assigned to you, and what's left to deliver.</p>
+      <h1 className="font-display text-2xl text-ink dark:text-[#e9e4d8]">Your assignments</h1>
+      <p className="mt-1 text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">Orders assigned to you, and what's left to deliver.</p>
 
       {error && (
         <p className="mt-4 rounded border border-amber/40 bg-amber/10 px-3 py-2 text-sm text-amber">{error}</p>
@@ -52,9 +52,9 @@ export default function WriterDashboard() {
         <StatCard label="Completed" value={data.stats.completed} />
       </div>
 
-      <h2 className="mt-10 font-display text-lg text-ink">Orders</h2>
+      <h2 className="mt-10 font-display text-lg text-ink dark:text-[#e9e4d8]">Orders</h2>
       <div className="mt-4 space-y-3">
-        {data.orders.length === 0 && <p className="text-sm text-charcoal/60">Nothing assigned to you yet.</p>}
+        {data.orders.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">Nothing assigned to you yet.</p>}
         {data.orders.map((o) => (
           <div key={o.id}>
             <OrderCard
@@ -63,7 +63,7 @@ export default function WriterDashboard() {
                 (o.status === "assigned" || o.status === "in_progress") && (
                   <button
                     onClick={() => setSubmittingTo(submittingTo === o.id ? null : o.id)}
-                    className="rounded border border-ink px-3 py-1 text-xs text-ink hover:bg-ink hover:text-paper"
+                    className="rounded border border-ink px-3 py-1 text-xs text-ink dark:text-[#e9e4d8] hover:bg-ink hover:text-paper"
                   >
                     Submit work
                   </button>
@@ -71,13 +71,13 @@ export default function WriterDashboard() {
               }
             />
             {submittingTo === o.id && (
-              <div className="mt-2 rounded border border-line bg-white/60 p-4">
+              <div className="mt-2 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-4">
                 <textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Paste or write the completed piece here…"
                   rows={6}
-                  className="w-full rounded border border-line bg-white/70 p-2 text-sm outline-none focus:border-amber"
+                  className="w-full rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 p-2 text-sm outline-none focus:border-amber"
                 />
                 <button
                   onClick={() => handleSubmit(o.id)}

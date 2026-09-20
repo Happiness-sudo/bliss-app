@@ -87,16 +87,16 @@ export default function OrderDetail() {
   }
 
   if (error && !order) return <p className="mx-auto max-w-3xl px-6 py-10 text-amber">{error}</p>;
-  if (!order) return <p className="mx-auto max-w-3xl px-6 py-10 text-charcoal/60">Loading...</p>;
+  if (!order) return <p className="mx-auto max-w-3xl px-6 py-10 text-charcoal/60 dark:text-[#c9c2b0]/60">Loading...</p>;
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
-      <Link to=".." relative="path" className="text-sm text-charcoal/50 hover:text-amber">Back</Link>
+      <Link to=".." relative="path" className="text-sm text-charcoal/50 dark:text-[#c9c2b0]/50 hover:text-amber">Back</Link>
 
       <div className="mt-3 flex items-start justify-between">
         <div>
-          <h1 className="font-display text-2xl text-ink">Order #{order.order_number}</h1>
-          <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-charcoal/60">
+          <h1 className="font-display text-2xl text-ink dark:text-[#e9e4d8]">Order #{order.order_number}</h1>
+          <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">
             <span>{order.page_count} page(s) - ${order.payment_amount.toFixed(0)}</span>
             {order.bidder_id && (
               <span className="inline-flex items-center gap-1">
@@ -112,48 +112,48 @@ export default function OrderDetail() {
             )}
           </p>
         </div>
-        <span className="whitespace-nowrap rounded-full border border-line px-3 py-1 text-xs capitalize text-charcoal/70">{order.status.replace(/_/g, " ")}</span>
+        <span className="whitespace-nowrap rounded-full border border-line dark:border-[#333b47] px-3 py-1 text-xs capitalize text-charcoal/70 dark:text-[#c9c2b0]/70">{order.status.replace(/_/g, " ")}</span>
       </div>
 
-      <p className="mt-4 rounded border border-line bg-white/60 p-4 text-sm leading-relaxed text-charcoal/85">{order.instructions}</p>
+      <p className="mt-4 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-4 text-sm leading-relaxed text-charcoal/85 dark:text-[#c9c2b0]/85">{order.instructions}</p>
 
       {error && <p className="mt-4 rounded border border-amber/40 bg-amber/10 px-3 py-2 text-sm text-amber">{error}</p>}
 
-      <h2 className="mt-8 font-display text-lg text-ink">Files</h2>
+      <h2 className="mt-8 font-display text-lg text-ink dark:text-[#e9e4d8]">Files</h2>
       <div className="mt-3 space-y-2">
-        {files.length === 0 && <p className="text-sm text-charcoal/60">No files uploaded yet.</p>}
+        {files.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No files uploaded yet.</p>}
         {files.map((f) => (
-          <div key={f.id} className="flex items-center justify-between rounded border border-line bg-white/60 px-4 py-3 text-sm">
+          <div key={f.id} className="flex items-center justify-between rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 px-4 py-3 text-sm">
             <div>
-              <button onClick={() => api.downloadFile(f.id, f.original_filename)} className="text-ink hover:text-amber underline">{f.original_filename}</button>
-              <p className="mt-0.5 text-xs text-charcoal/50">{formatSize(f.file_size)} - uploaded by {f.uploaded_by_name} - {formatTime(f.uploaded_at)}</p>
+              <button onClick={() => api.downloadFile(f.id, f.original_filename)} className="text-ink dark:text-[#e9e4d8] hover:text-amber underline">{f.original_filename}</button>
+              <p className="mt-0.5 text-xs text-charcoal/50 dark:text-[#c9c2b0]/50">{formatSize(f.file_size)} - uploaded by {f.uploaded_by_name} - {formatTime(f.uploaded_at)}</p>
             </div>
-            <button onClick={() => handleDeleteFile(f.id)} className="text-xs text-charcoal/50 hover:text-amber">Delete</button>
+            <button onClick={() => handleDeleteFile(f.id)} className="text-xs text-charcoal/50 dark:text-[#c9c2b0]/50 hover:text-amber">Delete</button>
           </div>
         ))}
       </div>
 
       <div className="mt-3">
-        <input ref={fileInputRef} type="file" onChange={handleFileChange} disabled={uploading} className="text-sm text-charcoal/70 file:mr-3 file:rounded file:border file:border-line file:bg-white/70 file:px-3 file:py-1.5 file:text-sm file:text-ink hover:file:border-amber" />
-        {uploading && <p className="mt-1 text-xs text-charcoal/50">Uploading...</p>}
+        <input ref={fileInputRef} type="file" onChange={handleFileChange} disabled={uploading} className="text-sm text-charcoal/70 dark:text-[#c9c2b0]/70 file:mr-3 file:rounded file:border file:border-line dark:border-[#333b47] file:bg-white/70 dark:bg-[#1e242e]/70 file:px-3 file:py-1.5 file:text-sm file:text-ink dark:text-[#e9e4d8] hover:file:border-amber" />
+        {uploading && <p className="mt-1 text-xs text-charcoal/50 dark:text-[#c9c2b0]/50">Uploading...</p>}
       </div>
 
-      <h2 className="mt-10 font-display text-lg text-ink">Comments</h2>
+      <h2 className="mt-10 font-display text-lg text-ink dark:text-[#e9e4d8]">Comments</h2>
       <div className="mt-3 space-y-3">
-        {comments.length === 0 && <p className="text-sm text-charcoal/60">No comments yet.</p>}
+        {comments.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No comments yet.</p>}
         {comments.map((c) => (
-          <div key={c.id} className="rounded border border-line bg-white/60 p-3 text-sm">
+          <div key={c.id} className="rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-3 text-sm">
             <div className="flex items-center justify-between">
-              <span className="capitalize text-ink">{c.author_name} <span className="text-charcoal/50">({c.author_role})</span></span>
-              <span className="text-xs text-charcoal/40">{formatTime(c.created_at)}</span>
+              <span className="capitalize text-ink dark:text-[#e9e4d8]">{c.author_name} <span className="text-charcoal/50 dark:text-[#c9c2b0]/50">({c.author_role})</span></span>
+              <span className="text-xs text-charcoal/40 dark:text-[#c9c2b0]/40">{formatTime(c.created_at)}</span>
             </div>
-            <p className="mt-1 text-charcoal/80">{c.body}</p>
+            <p className="mt-1 text-charcoal/80 dark:text-[#c9c2b0]/80">{c.body}</p>
           </div>
         ))}
       </div>
 
       <form onSubmit={handleSendComment} className="mt-4 flex gap-2">
-        <input value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Write a comment..." className="flex-1 rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber" />
+        <input value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Write a comment..." className="flex-1 rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber" />
         <button type="submit" disabled={sendingComment} className="rounded bg-amber px-4 py-2 text-sm text-white hover:bg-amber/90 disabled:opacity-60">{sendingComment ? "Sending..." : "Send"}</button>
       </form>
     </div>

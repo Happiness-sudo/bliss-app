@@ -44,8 +44,8 @@ export default function Login({ onAuth }) {
 
       <div className="flex items-center justify-center px-6 py-16">
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
-          <h1 className="font-display text-2xl text-ink">Welcome back</h1>
-          <p className="mt-1 text-sm text-charcoal/60">Log in to your BLISS account.</p>
+          <h1 className="font-display text-2xl text-ink dark:text-[#e9e4d8]">Welcome back</h1>
+          <p className="mt-1 text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">Log in to your BLISS account.</p>
 
           {error && (
             <p className="mt-4 rounded border border-amber/40 bg-amber/10 px-3 py-2 text-sm text-amber">
@@ -53,22 +53,22 @@ export default function Login({ onAuth }) {
             </p>
           )}
 
-          <label className="mt-6 block text-sm text-charcoal/80">Email</label>
+          <label className="mt-6 block text-sm text-charcoal/80 dark:text-[#c9c2b0]/80">Email</label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+            className="mt-1 w-full rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
           />
 
-          <label className="mt-4 block text-sm text-charcoal/80">Password</label>
+          <label className="mt-4 block text-sm text-charcoal/80 dark:text-[#c9c2b0]/80">Password</label>
           <input
             type="password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+            className="mt-1 w-full rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 px-3 py-2 text-sm outline-none focus:border-amber"
           />
 
           <button
@@ -79,13 +79,13 @@ export default function Login({ onAuth }) {
             {loading ? "Logging in..." : "Log in"}
           </button>
 
-          <p className="mt-6 text-center text-sm text-charcoal/60">
+          <p className="mt-6 text-center text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">
             New employer?{" "}
             <Link to="/signup" className="text-amber hover:underline">
               Create an account
             </Link>
           </p>
-          <p className="mt-2 text-center text-xs text-charcoal/40">
+          <p className="mt-2 text-center text-xs text-charcoal/40 dark:text-[#c9c2b0]/40">
             Bidders and writers: ask your employer to add you from Team settings.
           </p>
         </form>

@@ -13,19 +13,31 @@ import { connectSocket, disconnectSocket } from "./socket";
 function Home() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-20 text-center">
-      <h1 className="font-display text-4xl leading-tight text-ink">
+      <h1 className="font-display text-4xl leading-tight text-ink dark:text-[#e9e4d8]">
         Run your writing operation from one place
       </h1>
-      <p className="mx-auto mt-4 max-w-xl text-charcoal/70">
-        Employers manage the team. Bidders log orders won from clients.
-        Writers get clear instructions and deliver the work. BLISS keeps
-        every order moving.
-      </p>
+
+      <svg viewBox="0 0 400 220" className="mx-auto mt-10 h-48 w-auto" xmlns="http://www.w3.org/2000/svg">
+        <rect x="90" y="70" width="160" height="120" rx="6" fill="#F7F3EA" stroke="#D8D2C2" strokeWidth="2" transform="rotate(-6 170 130)" />
+        <rect x="120" y="60" width="160" height="120" rx="6" fill="#F7F3EA" stroke="#D8D2C2" strokeWidth="2" transform="rotate(3 200 120)" />
+        <rect x="105" y="55" width="160" height="120" rx="6" fill="#FFFFFF" stroke="#D8D2C2" strokeWidth="2" />
+        <line x1="125" y1="80" x2="225" y2="80" stroke="#D8D2C2" strokeWidth="3" strokeLinecap="round" />
+        <line x1="125" y1="98" x2="245" y2="98" stroke="#D8D2C2" strokeWidth="3" strokeLinecap="round" />
+        <line x1="125" y1="116" x2="205" y2="116" stroke="#D8D2C2" strokeWidth="3" strokeLinecap="round" />
+        <circle cx="230" cy="150" r="18" fill="#6E7F6B" />
+        <path d="M222 150 l6 6 l12 -14" stroke="#F7F3EA" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <g transform="translate(260 40) rotate(35)">
+          <rect x="0" y="0" width="10" height="90" rx="3" fill="#C9862B" />
+          <path d="M0 90 L10 90 L5 108 Z" fill="#1B2430" />
+          <rect x="0" y="-10" width="10" height="12" rx="2" fill="#1B2430" />
+        </g>
+      </svg>
+
       <div className="mt-8 flex justify-center gap-3">
         <Link to="/signup" className="rounded bg-ink px-6 py-2.5 text-sm text-paper hover:bg-ink/90">
           Get started
         </Link>
-        <Link to="/login" className="rounded border border-line px-6 py-2.5 text-sm text-ink hover:border-amber">
+        <Link to="/login" className="rounded border border-line dark:border-[#333b47] px-6 py-2.5 text-sm text-ink dark:text-[#e9e4d8] hover:border-amber">
           Log in
         </Link>
       </div>
@@ -66,7 +78,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen bg-paper dark:bg-[#14181f]">
       <Navbar user={user} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
