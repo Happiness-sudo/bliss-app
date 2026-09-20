@@ -3,7 +3,7 @@ import { api } from "../api";
 import OrderCard from "../components/OrderCard";
 import StatCard from "../components/StatCard";
 
-const emptyForm = { order_number: "", instructions: "", page_count: "", payment_amount: "", writer_id: "" };
+const emptyForm = { order_number: "", instructions: "", page_count: "", payment_amount: "", writer_id: "", deadline: "" };
 
 export default function BidderDashboard() {
   const [data, setData] = useState(null);
@@ -108,7 +108,7 @@ export default function BidderDashboard() {
             onChange={(e) => setForm({ ...form, instructions: e.target.value })}
             className="w-full rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
           />
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             <input
               type="number"
               placeholder="Number of pages"
@@ -121,6 +121,13 @@ export default function BidderDashboard() {
               placeholder="Payment ($)"
               value={form.payment_amount}
               onChange={(e) => setForm({ ...form, payment_amount: e.target.value })}
+              className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
+            />
+            <input
+              type="datetime-local"
+              placeholder="Deadline"
+              value={form.deadline}
+              onChange={(e) => setForm({ ...form, deadline: e.target.value })}
               className="rounded border border-line bg-white/70 px-3 py-2 text-sm outline-none focus:border-amber"
             />
             <select

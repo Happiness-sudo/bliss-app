@@ -25,6 +25,15 @@ export default function OrderCard({ order, action }) {
         </div>
         <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-charcoal/60">
           <span>{order.page_count} page(s) &middot; ${order.payment_amount.toFixed(0)}</span>
+          {order.deadline && (() => {
+            const due = new Date(order.deadline);
+            const overdue = due < new Date() && order.status !== "paid" && order.status !== "sent_to_client";
+            return (
+              <span className={overdue ? "font-medium text-red-600" : ""}>
+                Due {due.toLocaleString()}{overdue ? " (overdue)" : ""}
+              </span>
+            );
+          })()}
           {order.bidder_id && (
             <span className="inline-flex items-center gap-1">
               <PresenceDot userId={order.bidder_id} /> Bidder: {order.bidder_name}

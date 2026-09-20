@@ -68,9 +68,29 @@ export const api = {
   bidderDashboard: () => request("/dashboard/bidder", { auth: true }),
   employerDashboard: () => request("/dashboard/employer", { auth: true }),
 
+  listNotifications: () => request("/notifications", { auth: true }),
+  markNotificationRead: (id) => request(`/notifications/${id}/read`, { method: "POST", auth: true }),
+  markAllNotificationsRead: () => request("/notifications/read-all", { method: "POST", auth: true }),
+
   listFiles: (orderId) => request(`/orders/${orderId}/files`, { auth: true }),
   uploadFile: (orderId, file) => uploadRequest(`/orders/${orderId}/files`, file),
-  downloadFileUrl: (fileId) => `${BASE_URL}/files/${fileId}/download`,
+  downloadFile: async (fileId, filename) => {
+    const res = await fetch(`${BASE_URL}/files/${fileId}/download`, {
+      headers: authHeaders(),
+    });
+    if (!res.ok) {
+      throw new Error("Download failed.");
+    }
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  },
   deleteFile: (fileId) => request(`/files/${fileId}`, { method: "DELETE", auth: true }),
 
   listComments: (orderId) => request(`/orders/${orderId}/comments`, { auth: true }),

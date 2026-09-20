@@ -125,7 +125,7 @@ export default function OrderDetail() {
         {files.map((f) => (
           <div key={f.id} className="flex items-center justify-between rounded border border-line bg-white/60 px-4 py-3 text-sm">
             <div>
-              <a href={api.downloadFileUrl(f.id)} className="text-ink hover:text-amber" target="_blank" rel="noreferrer">{f.original_filename}</a>
+              <button onClick={() => api.downloadFile(f.id, f.original_filename)} className="text-ink hover:text-amber underline">{f.original_filename}</button>
               <p className="mt-0.5 text-xs text-charcoal/50">{formatSize(f.file_size)} - uploaded by {f.uploaded_by_name} - {formatTime(f.uploaded_at)}</p>
             </div>
             <button onClick={() => handleDeleteFile(f.id)} className="text-xs text-charcoal/50 hover:text-amber">Delete</button>

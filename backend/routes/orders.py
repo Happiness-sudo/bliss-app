@@ -1,6 +1,8 @@
+from datetime import datetime
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from models import db, User, Order
+from routes.notifications import create_notification
 
 orders_bp = Blueprint("orders", __name__)
 
@@ -34,6 +36,14 @@ def create_order():
         if not writer or writer.role != "writer" or writer.employer_id != bidder.employer_id:
             return jsonify({"error": "Invalid writer selected."}), 400
 
+    deadline_str = data.get("deadline")
+    deadline = None
+    if deadline_str:
+        try:
+            deadline = datetime.fromisoformat(deadline_str)
+        except ValueError:
+            return jsonify({"error": "Invalid deadline format."}), 400
+
     order = Order(
         order_number=order_number,
         employer_id=bidder.employer_id,
@@ -42,10 +52,19 @@ def create_order():
         instructions=instructions,
         page_count=int(data.get("page_count", 0) or 0),
         payment_amount=float(data.get("payment_amount", 0) or 0),
+        deadline=deadline,
         status="assigned",
     )
     db.session.add(order)
     db.session.commit()
+
+    if writer:
+        create_notification(
+            writer.id,
+            f"New order #{order.order_number} assigned to you.",
+            order_id=order.id,
+        )
+
     return jsonify(order.to_dict()), 201
 
 
@@ -68,6 +87,13 @@ def assign_writer(order_id):
     order.writer_id = writer.id
     order.status = "assigned"
     db.session.commit()
+
+    create_notification(
+        writer.id,
+        f"Order #{order.order_number} assigned to you.",
+        order_id=order.id,
+    )
+
     return jsonify(order.to_dict())
 
 
@@ -86,6 +112,13 @@ def submit_work(order_id):
     order.submission_text = data.get("submission_text", "")
     order.status = "submitted"
     db.session.commit()
+
+    create_notification(
+        order.bidder_id,
+        f"Order #{order.order_number} was submitted for review.",
+        order_id=order.id,
+    )
+
     return jsonify(order.to_dict())
 
 
@@ -111,6 +144,14 @@ def update_status(order_id):
     if new_status == "paid":
         order.is_paid = True
     db.session.commit()
+
+    if new_status == "paid":
+        create_notification(
+            order.employer_id,
+            f"Order #{order.order_number} was marked paid.",
+            order_id=order.id,
+        )
+
     return jsonify(order.to_dict())
 
 
