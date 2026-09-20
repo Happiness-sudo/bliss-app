@@ -9,6 +9,7 @@ from routes.team import team_bp
 from routes.orders import orders_bp
 from routes.files import files_bp
 from routes.comments import comments_bp
+from routes.notifications import notifications_bp
 from sockets import socketio
 
 
@@ -26,6 +27,7 @@ def create_app():
     app.register_blueprint(orders_bp, url_prefix="/api")
     app.register_blueprint(files_bp, url_prefix="/api")
     app.register_blueprint(comments_bp, url_prefix="/api")
+    app.register_blueprint(notifications_bp, url_prefix="/api")
 
     @app.get("/api/health")
     def health():

@@ -31,6 +31,7 @@ def handle_connect(auth):
 
     room = get_team_room(user)
     join_room(room)
+    join_room(f"user_{user_id}")
 
     online_counts[user_id] = online_counts.get(user_id, 0) + 1
     if online_counts[user_id] == 1:

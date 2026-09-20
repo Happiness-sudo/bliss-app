@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import NotificationBell from "./NotificationBell";
 
 const dashboardPath = {
   employer: "/employer",
@@ -29,6 +30,7 @@ export default function Navbar({ user, onLogout }) {
                 Team
               </Link>
             )}
+            <NotificationBell />
             <button
               onClick={() => {
                 onLogout();
