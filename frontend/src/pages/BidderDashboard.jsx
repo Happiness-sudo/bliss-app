@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { api } from "../api";
 import OrderCard from "../components/OrderCard";
 import StatCard from "../components/StatCard";
+import OrderFilterBar, { filterOrders } from "../components/OrderFilterBar";
 
 const emptyForm = { order_number: "", instructions: "", page_count: "", payment_amount: "", writer_id: "", deadline: "" };
 
 export default function BidderDashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [reassigning, setReassigning] = useState(null);
@@ -118,6 +121,7 @@ export default function BidderDashboard() {
             />
             <input
               type="number"
+              step="0.01"
               placeholder="Payment ($)"
               value={form.payment_amount}
               onChange={(e) => setForm({ ...form, payment_amount: e.target.value })}
@@ -148,9 +152,10 @@ export default function BidderDashboard() {
       )}
 
       <h2 className="mt-10 font-display text-lg text-ink dark:text-[#e9e4d8]">Orders</h2>
+      <OrderFilterBar status={statusFilter} onStatusChange={setStatusFilter} search={search} onSearchChange={setSearch} />
       <div className="mt-4 space-y-3">
-        {data.orders.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No orders logged yet.</p>}
-        {data.orders.map((o) => (
+        {filterOrders(data.orders, statusFilter, search).length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No orders match.</p>}
+        {filterOrders(data.orders, statusFilter, search).map((o) => (
           <div key={o.id}>
             <OrderCard
               order={o}

@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { api } from "../api";
 import OrderCard from "../components/OrderCard";
 import StatCard from "../components/StatCard";
+import OrderFilterBar, { filterOrders } from "../components/OrderFilterBar";
 
 export default function WriterDashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const [submittingTo, setSubmittingTo] = useState(null);
   const [text, setText] = useState("");
 
@@ -45,17 +48,20 @@ export default function WriterDashboard() {
         <p className="mt-4 rounded border border-amber/40 bg-amber/10 px-3 py-2 text-sm text-amber">{error}</p>
       )}
 
-      <div className="mt-6 grid grid-cols-4 gap-4">
+      <div className="mt-6 grid grid-cols-3 gap-4 md:grid-cols-6">
         <StatCard label="Total" value={data.stats.total} />
         <StatCard label="In progress" value={data.stats.in_progress} />
         <StatCard label="Submitted" value={data.stats.submitted} />
         <StatCard label="Completed" value={data.stats.completed} />
+        <StatCard label="Pages paid" value={data.stats.paid_pages} />
+        <StatCard label="Paid earnings" value={`$${data.stats.paid_earnings.toFixed(2)}`} />
       </div>
 
       <h2 className="mt-10 font-display text-lg text-ink dark:text-[#e9e4d8]">Orders</h2>
+      <OrderFilterBar status={statusFilter} onStatusChange={setStatusFilter} search={search} onSearchChange={setSearch} />
       <div className="mt-4 space-y-3">
-        {data.orders.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">Nothing assigned to you yet.</p>}
-        {data.orders.map((o) => (
+        {filterOrders(data.orders, statusFilter, search).length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No orders match.</p>}
+        {filterOrders(data.orders, statusFilter, search).map((o) => (
           <div key={o.id}>
             <OrderCard
               order={o}

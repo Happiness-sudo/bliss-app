@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import { api } from "../api";
 import OrderCard from "../components/OrderCard";
 import StatCard from "../components/StatCard";
+import OrderFilterBar, { filterOrders } from "../components/OrderFilterBar";
 
 export default function EmployerDashboard() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     api.employerDashboard().then(setData).catch((err) => setError(err.message));
@@ -35,9 +38,10 @@ export default function EmployerDashboard() {
       </div>
 
       <h2 className="mt-10 font-display text-lg text-ink dark:text-[#e9e4d8]">All orders</h2>
+      <OrderFilterBar status={statusFilter} onStatusChange={setStatusFilter} search={search} onSearchChange={setSearch} />
       <div className="mt-4 space-y-3">
-        {data.orders.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No orders yet.</p>}
-        {data.orders.map((o) => (
+        {filterOrders(data.orders, statusFilter, search).length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No orders match.</p>}
+        {filterOrders(data.orders, statusFilter, search).map((o) => (
           <div key={o.id}>
             <OrderCard
               order={o}
