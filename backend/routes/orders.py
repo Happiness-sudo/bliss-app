@@ -68,6 +68,45 @@ def create_order():
     return jsonify(order.to_dict()), 201
 
 
+@orders_bp.patch("/orders/<int:order_id>")
+@jwt_required()
+def edit_order(order_id):
+    claims = get_jwt()
+    if claims.get("role") != "bidder":
+        return jsonify({"error": "Only bidders can edit orders."}), 403
+
+    order = Order.query.get_or_404(order_id)
+    if order.bidder_id != int(get_jwt_identity()):
+        return jsonify({"error": "This isn't your order."}), 403
+
+    data = request.get_json(force=True) or {}
+
+    if "instructions" in data:
+        instructions = (data.get("instructions") or "").strip()
+        if not instructions:
+            return jsonify({"error": "Instructions can't be empty."}), 400
+        order.instructions = instructions
+
+    if "page_count" in data:
+        order.page_count = int(data.get("page_count", 0) or 0)
+
+    if "payment_amount" in data:
+        order.payment_amount = float(data.get("payment_amount", 0) or 0)
+
+    if "deadline" in data:
+        deadline_str = data.get("deadline")
+        if deadline_str:
+            try:
+                order.deadline = datetime.fromisoformat(deadline_str)
+            except ValueError:
+                return jsonify({"error": "Invalid deadline format."}), 400
+        else:
+            order.deadline = None
+
+    db.session.commit()
+    return jsonify(order.to_dict())
+
+
 @orders_bp.post("/orders/<int:order_id>/assign")
 @jwt_required()
 def assign_writer(order_id):
@@ -172,6 +211,8 @@ def writer_dashboard():
             "in_progress": len([o for o in orders if o.status in ("assigned", "in_progress")]),
             "submitted": len([o for o in orders if o.status == "submitted"]),
             "completed": len([o for o in orders if o.status in ("sent_to_client", "paid")]),
+            "paid_pages": sum(o.page_count for o in orders if o.is_paid),
+            "paid_earnings": sum(o.payment_amount for o in orders if o.is_paid),
         },
     })
 

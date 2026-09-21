@@ -49,6 +49,7 @@ export const api = {
 
   createOrder: (payload) => request("/orders", { method: "POST", body: payload, auth: true }),
   getOrder: (orderId) => request(`/orders/${orderId}`, { auth: true }),
+  editOrder: (orderId, payload) => request(`/orders/${orderId}`, { method: "PATCH", body: payload, auth: true }),
   assignWriter: (orderId, writerId) =>
     request(`/orders/${orderId}/assign`, { method: "POST", body: { writer_id: writerId }, auth: true }),
   submitWork: (orderId, submissionText) =>

@@ -22,6 +22,10 @@ export default function OrderDetail() {
   const [uploading, setUploading] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [sendingComment, setSendingComment] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editText, setEditText] = useState("");
+  const [savingEdit, setSavingEdit] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("bliss_user") || "null");
   const fileInputRef = useRef(null);
 
   async function loadAll() {
@@ -42,6 +46,20 @@ export default function OrderDetail() {
   useEffect(() => {
     loadAll();
   }, [orderId]);
+
+  async function handleSaveInstructions() {
+    setSavingEdit(true);
+    setError("");
+    try {
+      const updated = await api.editOrder(orderId, { instructions: editText });
+      setOrder(updated);
+      setEditing(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSavingEdit(false);
+    }
+  }
 
   async function handleFileChange(e) {
     const file = e.target.files[0];
@@ -115,7 +133,46 @@ export default function OrderDetail() {
         <span className="whitespace-nowrap rounded-full border border-line dark:border-[#333b47] px-3 py-1 text-xs capitalize text-charcoal/70 dark:text-[#c9c2b0]/70">{order.status.replace(/_/g, " ")}</span>
       </div>
 
-      <p className="mt-4 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-4 text-sm leading-relaxed text-charcoal/85 dark:text-[#c9c2b0]/85">{order.instructions}</p>
+      {editing ? (
+        <div className="mt-4 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-4">
+          <textarea
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            rows={4}
+            className="w-full rounded border border-line dark:border-[#333b47] bg-white/70 dark:bg-[#1e242e]/70 p-2 text-sm text-charcoal dark:text-[#c9c2b0] outline-none focus:border-amber"
+          />
+          <div className="mt-2 flex gap-2">
+            <button
+              onClick={handleSaveInstructions}
+              disabled={savingEdit}
+              className="rounded bg-amber px-4 py-1.5 text-sm text-white hover:bg-amber/90 disabled:opacity-60"
+            >
+              {savingEdit ? "Saving..." : "Save"}
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="rounded border border-line dark:border-[#333b47] px-4 py-1.5 text-sm text-charcoal dark:text-[#c9c2b0] hover:border-amber"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 p-4">
+          <p className="text-sm leading-relaxed text-charcoal/85 dark:text-[#c9c2b0]/85">{order.instructions}</p>
+          {currentUser && currentUser.role === "bidder" && currentUser.id === order.bidder_id && (
+            <button
+              onClick={() => {
+                setEditText(order.instructions);
+                setEditing(true);
+              }}
+              className="mt-2 text-xs text-charcoal/50 dark:text-[#c9c2b0]/50 hover:text-amber"
+            >
+              Edit instructions
+            </button>
+          )}
+        </div>
+      )}
 
       {error && <p className="mt-4 rounded border border-amber/40 bg-amber/10 px-3 py-2 text-sm text-amber">{error}</p>}
 
