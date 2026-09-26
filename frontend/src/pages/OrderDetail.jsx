@@ -18,6 +18,7 @@ export default function OrderDetail() {
   const [order, setOrder] = useState(null);
   const [files, setFiles] = useState([]);
   const [comments, setComments] = useState([]);
+  const [history, setHistory] = useState([]);
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -30,14 +31,16 @@ export default function OrderDetail() {
 
   async function loadAll() {
     try {
-      const [orderData, fileData, commentData] = await Promise.all([
+      const [orderData, fileData, commentData, historyData] = await Promise.all([
         api.getOrder(orderId),
         api.listFiles(orderId),
         api.listComments(orderId),
+        api.getOrderHistory(orderId),
       ]);
       setOrder(orderData);
       setFiles(fileData);
       setComments(commentData);
+      setHistory(historyData);
     } catch (err) {
       setError(err.message);
     }
@@ -175,6 +178,20 @@ export default function OrderDetail() {
       )}
 
       {error && <p className="mt-4 rounded border border-amber/40 bg-amber/10 px-3 py-2 text-sm text-amber">{error}</p>}
+
+      <h2 className="mt-8 font-display text-lg text-ink dark:text-[#e9e4d8]">History</h2>
+      <div className="mt-3 space-y-2">
+        {history.length === 0 && <p className="text-sm text-charcoal/60 dark:text-[#c9c2b0]/60">No history yet.</p>}
+        {history.map((h) => (
+          <div key={h.id} className="flex items-center justify-between rounded border border-line dark:border-[#333b47] bg-white/60 dark:bg-[#1e242e]/60 px-4 py-2 text-sm">
+            <span className="text-charcoal/80 dark:text-[#c9c2b0]/80">
+              {h.from_status ? `${h.from_status.replace(/_/g, " ")} -> ${h.to_status.replace(/_/g, " ")}` : `Created as ${h.to_status.replace(/_/g, " ")}`}
+              <span className="text-charcoal/50 dark:text-[#c9c2b0]/50"> by {h.changed_by_name} ({h.changed_by_role})</span>
+            </span>
+            <span className="text-xs text-charcoal/40 dark:text-[#c9c2b0]/40">{formatTime(h.changed_at)}</span>
+          </div>
+        ))}
+      </div>
 
       <h2 className="mt-8 font-display text-lg text-ink dark:text-[#e9e4d8]">Files</h2>
       <div className="mt-3 space-y-2">
